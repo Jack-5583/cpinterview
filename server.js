@@ -228,6 +228,11 @@ io.on('connection', (socket) => {
     }
   });
 
+  // 소리 테스트: 키오스크에 팝업 없이 알림음(띵동)만 재생 (연결/소리 점검용)
+  socket.on('sound:test', () => {
+    io.emit('sound:play');
+  });
+
   // 조 호출 -> 키오스크 팝업 + 소리, 그리고 대기 조를 자동으로 "다음 조" 로
   socket.on('group:call', ({ id } = {}, ack) => {
     const idx = groupIndex(id);

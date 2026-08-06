@@ -179,4 +179,5 @@
   socket.on('disconnect', () => { connEl.classList.add('off'); connEl.title = '서버 연결 끊김'; });
   socket.on('state', (st) => render(st));
   socket.on('group:called', (payload) => showCall(payload));
+  socket.on('sound:play', () => playDingDong()); // 관리자 소리 테스트 (팝업 없이 소리만)
 })();

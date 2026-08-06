@@ -150,6 +150,11 @@
     });
   });
 
+  $('btn-test-sound').addEventListener('click', () => {
+    socket.emit('sound:test');
+    toast('키오스크로 알림음(띵동)을 보냈습니다.', 'ok');
+  });
+
   $('btn-clear-app').addEventListener('click', () => { if (applicants.length && confirm('모든 대기자와 조를 삭제할까요?')) socket.emit('applicant:clear'); });
   $('btn-clear-grp').addEventListener('click', () => { if (groups.length && confirm('편성된 모든 조를 삭제할까요?')) socket.emit('group:clear'); });
 

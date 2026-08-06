@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 246" fill="none">
+  <!-- 착석 전: 빈 나무 의자 -->
+  <g stroke="#3F3D56" stroke-width="6" stroke-linejoin="round" stroke-linecap="round">
+    <!-- 등받이 -->
+    <rect x="41" y="8" width="118" height="62" rx="24" fill="#C99A6B"/>
+    <circle cx="74" cy="39" r="4" fill="#3F3D56" stroke="none"/>
+    <circle cx="126" cy="39" r="4" fill="#3F3D56" stroke="none"/>
+    <!-- 등받이 지지대 -->
+    <path d="M62 70 L58 126" fill="none"/>
+    <path d="M138 70 L142 126" fill="none"/>
+    <!-- 뒷다리 -->
+    <path d="M46 150 L30 236" fill="none" stroke-width="7"/>
+    <path d="M154 150 L170 236" fill="none" stroke-width="7"/>
+    <!-- 좌석 -->
+    <path d="M18 124 C18 112 40 108 100 108 C160 108 182 112 182 124 C182 150 150 158 100 158 C50 158 18 150 18 124 Z" fill="#C99A6B"/>
+    <path d="M28 121 C55 132 145 132 172 121" fill="none" stroke-width="4" opacity="0.55"/>
+    <!-- 앞다리 -->
+    <path d="M60 150 L52 238" fill="none" stroke-width="8"/>
+    <path d="M140 150 L148 238" fill="none" stroke-width="8"/>
+  </g>
+</svg>

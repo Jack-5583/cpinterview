@@ -1,0 +1,212 @@
+/* ===== 키오스크 클라이언트 ===== */
+(function () {
+  'use strict';
+
+  const socket = io();
+  const $ = (id) => document.getElementById(id);
+
+  const seatsEl = $('seats');
+  const emptyEl = $('empty');
+  const clockEl = $('clock');
+  const connEl = $('conn');
+
+  let latestApplicants = [];
+
+  // ---- 시계 ----
+  function fmtTime(ts) {
+    const d = new Date(ts);
+    let h = d.getHours();
+    const m = d.getMinutes();
+    const ampm = h < 12 ? '오전' : '오후';
+    let hh = h % 12;
+    if (hh === 0) hh = 12;
+    return `${ampm} ${hh}:${String(m).padStart(2, '0')}`;
+  }
+  function tick() { clockEl.textContent = fmtTime(Date.now()); }
+  tick();
+  setInterval(tick, 1000);
+
+  // ---- 마스코트 선택 ----
+  function illustFor(a) {
+    if (!a.seated) return '/assets/chair.svg';
+    if (a.gender === 'female') return '/assets/mascot-female.svg';
+    return '/assets/mascot-male.svg'; // male & unknown fallback
+  }
+
+  // ---- 렌더링 ----
+  function render(applicants) {
+    latestApplicants = applicants;
+    seatsEl.innerHTML = '';
+    if (!applicants.length) {
+      emptyEl.classList.add('show');
+      return;
+    }
+    emptyEl.classList.remove('show');
+
+    applicants.forEach((a) => {
+      const card = document.createElement('div');
+      card.className = 'seat' + (a.seated ? ' is-seated' : '');
+      card.dataset.id = a.studentId;
+
+      const foot = a.seated
+        ? `<div class="seat-time"><span class="dot"></span>착석 완료 · ${fmtTime(a.seatedAt)}</div>
+           <button class="btn btn-danger btn-cancel">착석 취소</button>`
+        : `<button class="btn btn-primary btn-seat">착석 완료</button>`;
+
+      card.innerHTML = `
+        <div class="seat-head">
+          <div class="seat-sid">${a.studentId}</div>
+          <div class="seat-name">${escapeHtml(a.name)}</div>
+        </div>
+        <div class="seat-illust">
+          <img src="${illustFor(a)}" alt="" draggable="false" />
+        </div>
+        <div class="seat-foot">${foot}</div>`;
+
+      if (!a.seated) {
+        card.querySelector('.btn-seat').addEventListener('click', () => openConfirm(a));
+      } else {
+        card.querySelector('.btn-cancel').addEventListener('click', () => {
+          if (confirm(`${a.studentId} ${a.name} 님의 착석을 취소할까요?`)) {
+            socket.emit('seat:cancel', { studentId: a.studentId });
+          }
+        });
+      }
+      seatsEl.appendChild(card);
+    });
+  }
+
+  function escapeHtml(s) {
+    return String(s).replace(/[&<>"']/g, (c) => ({
+      '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;',
+    }[c]));
+  }
+
+  // ---- 착석 확인 모달 ----
+  const modal = $('confirm-modal');
+  const agree = $('confirm-agree');
+  const okBtn = $('confirm-ok');
+  let pending = null;
+
+  function openConfirm(a) {
+    pending = a;
+    $('confirm-who').textContent = `${a.studentId} ${a.name}`;
+    agree.checked = false;
+    okBtn.disabled = true;
+    modal.classList.remove('hidden');
+    modal.setAttribute('aria-hidden', 'false');
+  }
+  function closeConfirm() {
+    modal.classList.add('hidden');
+    modal.setAttribute('aria-hidden', 'true');
+    pending = null;
+  }
+  agree.addEventListener('change', () => { okBtn.disabled = !agree.checked; });
+  okBtn.addEventListener('click', () => {
+    if (pending && agree.checked) {
+      socket.emit('seat:complete', { studentId: pending.studentId });
+      unlockAudio(); // 사용자 상호작용 시점에 오디오 활성화
+    }
+    closeConfirm();
+  });
+  $('confirm-cancel').addEventListener('click', closeConfirm);
+  $('confirm-x').addEventListener('click', closeConfirm);
+  modal.addEventListener('click', (e) => { if (e.target === modal) closeConfirm(); });
+
+  // ---- 조 호출 팝업 + 소리 ----
+  const callPopup = $('call-popup');
+  const callNames = $('call-names');
+  let callTimer = null;
+
+  function showCall(members) {
+    if (!members || !members.length) return;
+    callNames.innerHTML = members
+      .map((m) => `<span class="sid">${m.studentId}</span> ${escapeHtml(m.name)}`)
+      .join(',&nbsp;&nbsp;');
+
+    // 호출된 좌석 강조
+    document.querySelectorAll('.seat.is-called').forEach((el) => el.classList.remove('is-called'));
+    members.forEach((m) => {
+      const el = seatsEl.querySelector(`.seat[data-id="${m.studentId}"]`);
+      if (el) el.classList.add('is-called');
+    });
+
+    callPopup.classList.remove('hidden');
+    callPopup.setAttribute('aria-hidden', 'false');
+    playDingDong();
+
+    clearTimeout(callTimer);
+    callTimer = setTimeout(() => {
+      callPopup.classList.add('hidden');
+      callPopup.setAttribute('aria-hidden', 'true');
+      document.querySelectorAll('.seat.is-called').forEach((el) => el.classList.remove('is-called'));
+    }, 5000); // 5초 유지 후 사라짐
+  }
+
+  // ---- 오디오 (띵동) ----
+  let audioCtx = null;
+  function unlockAudio() {
+    try {
+      if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+      if (audioCtx.state === 'suspended') audioCtx.resume();
+      hideAudioHint();
+    } catch (_) { /* noop */ }
+  }
+  function beep(freq, start, dur) {
+    const osc = audioCtx.createOscillator();
+    const gain = audioCtx.createGain();
+    osc.type = 'sine';
+    osc.frequency.value = freq;
+    osc.connect(gain);
+    gain.connect(audioCtx.destination);
+    const t = audioCtx.currentTime + start;
+    gain.gain.setValueAtTime(0, t);
+    gain.gain.linearRampToValueAtTime(0.6, t + 0.02);
+    gain.gain.exponentialRampToValueAtTime(0.0001, t + dur);
+    osc.start(t);
+    osc.stop(t + dur + 0.05);
+  }
+  function playDingDong() {
+    try {
+      if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+      if (audioCtx.state === 'suspended') { audioCtx.resume(); }
+      // 띵(E5) - 동(C5) 초인종 소리
+      beep(659.25, 0.0, 0.55);
+      beep(523.25, 0.42, 0.75);
+    } catch (_) { showAudioHint(); }
+  }
+
+  // 소리 활성화 힌트 (브라우저 자동재생 정책 대비)
+  let hintEl = null;
+  function showAudioHint() {
+    if (hintEl) return;
+    hintEl = document.createElement('button');
+    hintEl.textContent = '🔔 화면을 한 번 눌러 알림 소리를 켜주세요';
+    hintEl.style.cssText =
+      'position:fixed;left:50%;bottom:22px;transform:translateX(-50%);z-index:80;' +
+      'background:#1d4ed8;color:#fff;font-weight:700;font-size:16px;padding:12px 20px;' +
+      'border-radius:999px;box-shadow:0 10px 24px rgba(0,0,0,.25);cursor:pointer';
+    hintEl.addEventListener('click', unlockAudio);
+    document.body.appendChild(hintEl);
+  }
+  function hideAudioHint() { if (hintEl) { hintEl.remove(); hintEl = null; } }
+
+  // 첫 사용자 상호작용에 오디오 잠금 해제
+  window.addEventListener('pointerdown', unlockAudio, { once: false });
+
+  // 오디오 컨텍스트가 정지 상태면 힌트 노출
+  setTimeout(() => {
+    if (!audioCtx || audioCtx.state !== 'running') {
+      try {
+        audioCtx = audioCtx || new (window.AudioContext || window.webkitAudioContext)();
+        if (audioCtx.state !== 'running') showAudioHint();
+      } catch (_) { /* noop */ }
+    }
+  }, 1200);
+
+  // ---- 소켓 이벤트 ----
+  socket.on('connect', () => { connEl.classList.remove('off'); connEl.title = '서버 연결됨'; });
+  socket.on('disconnect', () => { connEl.classList.add('off'); connEl.title = '서버 연결 끊김'; });
+  socket.on('state', (st) => render(st.applicants || []));
+  socket.on('group:called', ({ members }) => showCall(members));
+})();

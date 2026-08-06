@@ -1,0 +1,40 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 246" fill="none">
+  <!-- 여자 착석 완료: 흰색 딸기무늬 캐릭터(빨간 리본)가 의자에 앉은 모습 -->
+  <g stroke="#3F3D56" stroke-width="5" stroke-linejoin="round" stroke-linecap="round">
+    <!-- 의자 (뒤) -->
+    <path d="M52 168 L38 240" fill="none" stroke-width="6"/>
+    <path d="M148 168 L162 240" fill="none" stroke-width="6"/>
+    <path d="M22 150 C22 140 46 137 100 137 C154 137 178 140 178 150 C178 166 144 172 100 172 C56 172 22 166 22 150 Z" fill="#C99A6B"/>
+    <path d="M70 165 L60 242" fill="none" stroke-width="7"/>
+    <path d="M130 165 L140 242" fill="none" stroke-width="7"/>
+
+    <!-- 작은 팔/발 -->
+    <ellipse cx="52" cy="120" rx="13" ry="10" fill="#FFFFFF"/>
+    <ellipse cx="148" cy="120" rx="13" ry="10" fill="#FFFFFF"/>
+    <ellipse cx="84" cy="150" rx="12" ry="9" fill="#FFFFFF"/>
+    <ellipse cx="116" cy="150" rx="12" ry="9" fill="#FFFFFF"/>
+
+    <!-- 리본 (오른쪽) -->
+    <path d="M150 60 q26 -10 24 16 q-2 22 -24 12 q-10 -16 0 -28 Z" fill="#E8503A"/>
+    <path d="M150 88 q22 6 26 26 q2 20 -22 12 q-12 -18 -4 -38 Z" fill="#E8503A"/>
+    <circle cx="150" cy="80" r="8" fill="#E8503A"/>
+
+    <!-- 몸통(머리 일체형) -->
+    <path d="M44 96 C44 54 72 30 100 30 C128 30 156 54 156 96 C156 134 130 156 100 156 C70 156 44 134 44 96 Z" fill="#FFFFFF"/>
+
+    <!-- 딸기 점무늬 -->
+    <circle cx="70" cy="66" r="7" fill="#E8503A" stroke="none"/>
+    <circle cx="126" cy="58" r="9" fill="#E8503A" stroke="none"/>
+    <circle cx="76" cy="112" r="6" fill="#E8503A" stroke="none"/>
+    <circle cx="132" cy="120" r="8" fill="#E8503A" stroke="none"/>
+    <circle cx="104" cy="138" r="7" fill="#E8503A" stroke="none"/>
+    <circle cx="140" cy="92" r="5" fill="#E8503A" stroke="none"/>
+    <circle cx="58" cy="92" r="5" fill="#E8503A" stroke="none"/>
+
+    <!-- 얼굴 -->
+    <circle cx="86" cy="92" r="5" fill="#3F3D56" stroke="none"/>
+    <circle cx="114" cy="92" r="5" fill="#3F3D56" stroke="none"/>
+    <path d="M90 104 q10 9 20 0" fill="none" stroke-width="4"/>
+    <circle cx="122" cy="104" r="6" fill="#F8B9C4" stroke="none" opacity="0.85"/>
+  </g>
+</svg>

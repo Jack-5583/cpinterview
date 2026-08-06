@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>면접 대기 관리 시스템</title>
+  <link rel="icon" href="/assets/favicon.svg" />
+  <link rel="stylesheet" href="/css/common.css" />
+  <style>
+    .wrap { min-height: 100vh; display: grid; place-items: center; padding: 24px; }
+    .panel {
+      background: var(--card); border-radius: var(--radius-lg); box-shadow: var(--shadow-lg);
+      padding: 48px 44px; max-width: 560px; width: 100%; text-align: center;
+    }
+    .panel h1 { margin: 0 0 6px; font-size: 30px; color: var(--blue-800); }
+    .panel p { margin: 0 0 32px; color: var(--muted); }
+    .links { display: grid; gap: 16px; }
+    .links a {
+      display: flex; align-items: center; gap: 16px; text-decoration: none;
+      padding: 22px 24px; border-radius: var(--radius-md); border: 2px solid var(--blue-100);
+      color: var(--ink); background: var(--blue-50); transition: .15s;
+    }
+    .links a:hover { border-color: var(--blue-400); transform: translateY(-2px); box-shadow: var(--shadow); }
+    .links .ico { font-size: 34px; }
+    .links .t { text-align: left; }
+    .links .t strong { display: block; font-size: 19px; color: var(--blue-800); }
+    .links .t span { font-size: 14px; color: var(--muted); }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="panel">
+      <h1>면접 대기 관리 시스템</h1>
+      <p>운영할 화면을 선택하세요.</p>
+      <div class="links">
+        <a href="/admin">
+          <div class="ico">🖥️</div>
+          <div class="t"><strong>관리자 페이지</strong><span>대기자 등록 · 조 편성 · 조 호출</span></div>
+        </a>
+        <a href="/kiosk">
+          <div class="ico">🪑</div>
+          <div class="t"><strong>키오스크 페이지</strong><span>대기자 착석 완료 · 입실 안내</span></div>
+        </a>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

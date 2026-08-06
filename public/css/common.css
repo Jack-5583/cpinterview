@@ -1,0 +1,107 @@
+/* ===== 공통 테마 (푸른색) ===== */
+:root {
+  --blue-900: #1e3a8a;
+  --blue-800: #1e40af;
+  --blue-700: #1d4ed8;
+  --blue-600: #2563eb;
+  --blue-500: #3b82f6;
+  --blue-400: #60a5fa;
+  --blue-300: #93c5fd;
+  --blue-100: #dbeafe;
+  --blue-50:  #eff6ff;
+
+  --ink:      #1e293b;
+  --ink-soft: #475569;
+  --muted:    #64748b;
+  --line:     #e2e8f0;
+
+  --bg:       #eef4ff;
+  --card:     #ffffff;
+  --navy:     #3f3d56;
+
+  --ok:       #16a34a;
+  --danger:   #e11d48;
+
+  --radius-lg: 28px;
+  --radius-md: 18px;
+  --radius-sm: 12px;
+  --shadow:   0 10px 30px rgba(30, 58, 138, 0.10);
+  --shadow-lg: 0 24px 60px rgba(30, 58, 138, 0.22);
+
+  --font: "Pretendard", "Pretendard Variable", -apple-system, BlinkMacSystemFont,
+          "Apple SD Gothic Neo", "Malgun Gothic", "맑은 고딕", "Noto Sans KR", sans-serif;
+}
+
+* { box-sizing: border-box; }
+
+html, body {
+  margin: 0;
+  padding: 0;
+  font-family: var(--font);
+  color: var(--ink);
+  background: var(--bg);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+button {
+  font-family: inherit;
+  cursor: pointer;
+  border: none;
+  background: none;
+}
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  font-weight: 700;
+  border-radius: 999px;
+  transition: transform .08s ease, box-shadow .15s ease, background .15s ease, opacity .15s ease;
+  user-select: none;
+}
+.btn:active { transform: translateY(1px) scale(.99); }
+.btn:disabled { opacity: .5; cursor: not-allowed; }
+
+.btn-primary {
+  background: linear-gradient(180deg, var(--blue-500), var(--blue-700));
+  color: #fff;
+  box-shadow: 0 8px 18px rgba(37, 99, 235, .35);
+}
+.btn-primary:hover { background: linear-gradient(180deg, var(--blue-400), var(--blue-600)); }
+
+.btn-ghost {
+  background: var(--blue-50);
+  color: var(--blue-700);
+  border: 1.5px solid var(--blue-100);
+}
+.btn-ghost:hover { background: var(--blue-100); }
+
+.btn-danger {
+  background: #fff1f3;
+  color: var(--danger);
+  border: 1.5px solid #ffd9e0;
+}
+.btn-danger:hover { background: #ffe4e9; }
+
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 13px;
+  font-weight: 700;
+  padding: 3px 10px;
+  border-radius: 999px;
+  white-space: nowrap;
+}
+.badge-male   { background: #e0edff; color: #1d4ed8; }
+.badge-female { background: #ffe4ec; color: #db2777; }
+.badge-unknown{ background: #eef2f7; color: #64748b; }
+.badge-seated { background: #dcfce7; color: #15803d; }
+.badge-wait   { background: #fef3c7; color: #b45309; }
+
+/* 스크롤바 */
+::-webkit-scrollbar { width: 10px; height: 10px; }
+::-webkit-scrollbar-thumb { background: #cdd9ee; border-radius: 999px; }
+::-webkit-scrollbar-track { background: transparent; }

@@ -1,0 +1,186 @@
+/* ===== 키오스크 ===== */
+.kiosk {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background:
+    radial-gradient(1200px 600px at 80% -10%, #e3edff 0%, transparent 60%),
+    var(--bg);
+}
+
+/* 헤더 */
+.k-header {
+  position: relative;
+  padding: 26px 40px 30px;
+  background: linear-gradient(135deg, var(--blue-700) 0%, var(--blue-500) 100%);
+  color: #fff;
+  border-bottom-left-radius: 34px;
+  border-bottom-right-radius: 34px;
+  box-shadow: 0 14px 34px rgba(29, 78, 216, .28);
+}
+.k-time {
+  position: absolute;
+  top: 26px;
+  left: 34px;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: #fff;
+  color: var(--blue-800);
+  padding: 9px 18px;
+  border-radius: 999px;
+  font-size: 17px;
+  font-weight: 600;
+  box-shadow: 0 6px 16px rgba(0,0,0,.12);
+}
+.k-time strong { font-variant-numeric: tabular-nums; font-weight: 800; }
+.k-status {
+  position: absolute; top: 30px; right: 30px;
+  font-size: 16px; color: #93f0b0; opacity: .9;
+}
+.k-status.off { color: #ffd0d0; }
+.k-title { text-align: center; margin-top: 6px; }
+.k-sub { font-size: 20px; font-weight: 600; opacity: .92; margin-bottom: 4px; }
+.k-main { font-size: 44px; font-weight: 800; letter-spacing: -1px; text-shadow: 0 2px 8px rgba(0,0,0,.15); }
+
+/* 좌석 그리드 */
+.k-body { flex: 1; padding: 34px 40px 8px; }
+.k-seats {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 30px;
+  max-width: 1500px;
+  margin: 0 auto;
+}
+@media (max-width: 1100px) { .k-seats { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 720px)  { .k-seats { grid-template-columns: 1fr; } }
+
+.seat {
+  background: var(--card);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow);
+  border: 1px solid #eaf0fb;
+  padding: 26px 22px 24px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-height: 440px;
+  position: relative;
+  transition: box-shadow .2s, transform .2s, border-color .2s;
+}
+.seat.is-seated { border-color: var(--blue-200, #cfe0ff); box-shadow: 0 14px 34px rgba(29,78,216,.14); }
+.seat.is-called { animation: seatPulse 1s ease infinite; border-color: var(--blue-500); }
+@keyframes seatPulse { 0%,100% { box-shadow: 0 0 0 0 rgba(37,99,235,.35);} 50% { box-shadow: 0 0 0 10px rgba(37,99,235,0);} }
+
+.seat-head { text-align: center; margin-bottom: 6px; }
+.seat-sid { font-size: 22px; font-weight: 700; color: var(--blue-600); font-variant-numeric: tabular-nums; }
+.seat-name { font-size: 40px; font-weight: 800; color: var(--ink); letter-spacing: -.5px; line-height: 1.1; }
+
+.seat-illust {
+  flex: 1;
+  width: 100%;
+  display: grid;
+  place-items: center;
+  position: relative;
+  margin: 6px 0 10px;
+}
+.seat-illust img { width: auto; height: 210px; max-width: 100%; }
+
+.seat-foot { width: 100%; display: flex; flex-direction: column; align-items: center; gap: 12px; }
+.btn-seat { font-size: 24px; padding: 16px 46px; width: 100%; max-width: 300px; }
+.btn-cancel { font-size: 16px; padding: 9px 22px; }
+.seat-time {
+  display: inline-flex; align-items: center; gap: 8px;
+  background: #dcfce7; color: #15803d; font-weight: 800;
+  padding: 8px 18px; border-radius: 999px; font-size: 17px;
+}
+.seat-time .dot { width: 8px; height: 8px; border-radius: 50%; background: #16a34a; }
+
+/* 빈 상태 */
+.k-empty { text-align: center; color: var(--muted); padding: 60px 20px; display: none; }
+.k-empty.show { display: block; }
+.k-empty-emoji { font-size: 64px; margin-bottom: 10px; }
+.k-empty p { font-size: 20px; line-height: 1.6; }
+
+/* 푸터 */
+.k-footer {
+  padding: 14px 44px 26px;
+  color: var(--ink-soft);
+  font-size: 17px;
+  line-height: 1.5;
+  max-width: 1500px;
+  margin: 0 auto;
+}
+.k-footer p { margin: 2px 0; }
+.k-footer b { color: var(--blue-700); }
+
+/* ===== 착석 확인 모달 ===== */
+.modal-overlay {
+  position: fixed; inset: 0; z-index: 40;
+  background: rgba(15, 23, 42, .5);
+  backdrop-filter: blur(3px);
+  display: grid; place-items: center;
+  padding: 24px;
+}
+.modal-overlay.hidden { display: none; }
+.modal {
+  position: relative;
+  background: #fff; width: min(680px, 100%);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-lg);
+  padding: 44px 46px 34px;
+  animation: pop .18s ease;
+}
+@keyframes pop { from { transform: scale(.94); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+.modal-x {
+  position: absolute; top: 18px; left: 18px;
+  width: 42px; height: 42px; border-radius: 50%;
+  font-size: 26px; color: var(--muted); background: #f1f5f9;
+  display: grid; place-items: center; line-height: 1;
+}
+.modal-x:hover { background: #e2e8f0; }
+.modal-title { text-align: center; font-size: 27px; margin: 8px 0 20px; color: var(--ink); line-height: 1.35; }
+.modal-title span { color: var(--blue-700); }
+.modal-notice {
+  background: var(--blue-50); border: 1px solid var(--blue-100);
+  border-radius: var(--radius-md); padding: 20px 22px; color: var(--ink-soft);
+  font-size: 16px; line-height: 1.6;
+}
+.modal-notice-head { font-weight: 800; color: var(--blue-800); margin: 0 0 8px; }
+.modal-notice p { margin: 6px 0; }
+.modal-check {
+  display: flex; align-items: center; gap: 10px;
+  margin: 18px 4px 4px; font-size: 17px; font-weight: 600; color: var(--ink);
+  cursor: pointer; user-select: none;
+}
+.modal-check input { width: 22px; height: 22px; accent-color: var(--blue-600); cursor: pointer; }
+.modal-actions { display: flex; gap: 12px; margin-top: 22px; }
+.modal-actions .btn { flex: 1; font-size: 20px; padding: 15px; }
+
+/* ===== 조 호출 팝업 ===== */
+.call-overlay {
+  position: fixed; inset: 0; z-index: 60;
+  background: rgba(29, 58, 138, .78);
+  backdrop-filter: blur(6px);
+  display: grid; place-items: center;
+  padding: 24px;
+  animation: fadeIn .2s ease;
+}
+.call-overlay.hidden { display: none; }
+@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+.call-card {
+  background: #fff; border-radius: 40px;
+  padding: 60px 80px; text-align: center;
+  box-shadow: var(--shadow-lg);
+  animation: callPop .35s cubic-bezier(.2,.9,.3,1.4);
+  max-width: 92vw;
+}
+@keyframes callPop { from { transform: scale(.7); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+.call-emoji { font-size: 72px; animation: ring .8s ease infinite; }
+@keyframes ring { 0%,100%{ transform: rotate(0);} 20%{transform:rotate(16deg);} 40%{transform:rotate(-14deg);} 60%{transform:rotate(10deg);} 80%{transform:rotate(-6deg);} }
+.call-names {
+  font-size: 52px; font-weight: 800; color: var(--blue-800);
+  margin: 16px 0 12px; line-height: 1.3; letter-spacing: -1px;
+}
+.call-names .sid { color: var(--blue-500); font-size: .82em; }
+.call-msg { font-size: 40px; font-weight: 800; color: var(--ink); }

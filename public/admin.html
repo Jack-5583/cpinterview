@@ -1,0 +1,108 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>관리자 · 면접 대기 관리</title>
+  <link rel="icon" href="/assets/favicon.svg" />
+  <link rel="stylesheet" href="/css/common.css" />
+  <link rel="stylesheet" href="/css/admin.css" />
+</head>
+<body class="admin">
+  <header class="a-header">
+    <div class="a-brand">
+      <span class="a-logo">🖥️</span>
+      <div>
+        <h1>면접 대기 관리 · 관리자</h1>
+        <p>상산고 제45대 학생회 문화기획부 신입 부원 모집 1차 면접</p>
+      </div>
+    </div>
+    <div class="a-header-right">
+      <span class="a-clock" id="clock">--:--</span>
+      <span class="a-conn" id="conn">연결 중…</span>
+      <a class="btn btn-ghost" href="/kiosk" target="_blank" rel="noopener">키오스크 열기 ↗</a>
+    </div>
+  </header>
+
+  <main class="a-grid">
+    <!-- 왼쪽: 입력 -->
+    <section class="a-col">
+      <div class="card">
+        <h2 class="card-title">대기자 등록</h2>
+        <div class="row">
+          <input id="in-sid" class="inp" inputmode="numeric" maxlength="5" placeholder="학번 (5자리)" />
+          <input id="in-name" class="inp" placeholder="이름" />
+          <button id="btn-add" class="btn btn-primary">추가</button>
+        </div>
+        <p class="hint" id="add-msg"></p>
+
+        <div class="divider"><span>여러 명 한 번에</span></div>
+        <textarea id="in-bulk" class="inp ta" rows="5"
+          placeholder="한 줄에 한 명씩 &quot;학번 이름&quot; 형식으로 입력&#10;예)&#10;10101 홍카이&#10;10501 홍크리&#10;10402 홍성대"></textarea>
+        <button id="btn-bulk" class="btn btn-ghost full">일괄 등록</button>
+        <p class="hint">
+          성별은 학번 2·3번째 자리로 자동 판별됩니다. (01–04·09–12 → 남자, 05–08 → 여자)
+        </p>
+      </div>
+
+      <div class="card">
+        <h2 class="card-title">조 편성</h2>
+        <p class="hint">오른쪽 대기자 목록에서 <b>2~3명</b>을 선택한 뒤 조를 등록하세요.</p>
+        <div class="pick-bar">
+          <span id="pick-count" class="pick-count">선택 0명</span>
+          <div class="pick-actions">
+            <button id="btn-pick-clear" class="btn btn-ghost">선택 해제</button>
+            <button id="btn-group-create" class="btn btn-primary" disabled>조 등록</button>
+          </div>
+        </div>
+        <p class="hint" id="group-msg"></p>
+      </div>
+    </section>
+
+    <!-- 오른쪽: 목록 -->
+    <section class="a-col">
+      <div class="card">
+        <div class="card-head">
+          <h2 class="card-title">대기자 목록</h2>
+          <div class="card-head-right">
+            <span class="chip" id="stat-total">전체 0</span>
+            <span class="chip chip-ok" id="stat-seated">착석 0</span>
+            <button id="btn-clear-all" class="btn btn-danger sm">전체 삭제</button>
+          </div>
+        </div>
+        <div class="table-wrap">
+          <table class="tbl">
+            <thead>
+              <tr>
+                <th style="width:34px"></th>
+                <th>학번</th>
+                <th>이름</th>
+                <th>성별</th>
+                <th>상태</th>
+                <th>착석 시각</th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody id="tbody"></tbody>
+          </table>
+          <div id="tbl-empty" class="tbl-empty">등록된 대기자가 없습니다.</div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-head">
+          <h2 class="card-title">조 목록</h2>
+          <button id="btn-group-clear" class="btn btn-danger sm">전체 삭제</button>
+        </div>
+        <div id="groups" class="groups"></div>
+        <div id="groups-empty" class="tbl-empty">편성된 조가 없습니다.</div>
+      </div>
+    </section>
+  </main>
+
+  <div id="toast" class="toast"></div>
+
+  <script src="/socket.io/socket.io.js"></script>
+  <script src="/js/admin.js"></script>
+</body>
+</html>

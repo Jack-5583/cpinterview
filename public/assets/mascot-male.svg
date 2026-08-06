@@ -1,0 +1,53 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 280 320" fill="none">
+  <!-- 남자 착석 완료: 회색 코알라(네이비 재킷)가 의자에 앉은 모습 -->
+  <g stroke="#3F3D56" stroke-width="5" stroke-linejoin="round" stroke-linecap="round">
+    <!-- 의자 (뒤) -->
+    <path d="M64 214 L44 300" fill="none" stroke-width="7"/>
+    <path d="M216 214 L236 300" fill="none" stroke-width="7"/>
+    <path d="M30 196 C30 184 60 180 140 180 C220 180 250 184 250 196 C250 214 210 222 140 222 C70 222 30 214 30 196 Z" fill="#C99A6B"/>
+    <path d="M92 214 L84 302" fill="none" stroke-width="8"/>
+    <path d="M188 214 L196 302" fill="none" stroke-width="8"/>
+
+    <!-- 귀 -->
+    <circle cx="72" cy="72" r="36" fill="#DCE1E9"/>
+    <circle cx="72" cy="72" r="18" fill="#C3C9D6" stroke="none"/>
+    <circle cx="208" cy="72" r="36" fill="#DCE1E9"/>
+    <circle cx="208" cy="72" r="18" fill="#C3C9D6" stroke="none"/>
+
+    <!-- 다리/신발 (몸통 뒤에서 앞으로) -->
+    <path d="M112 236 q-10 34 4 52 q10 12 24 8" fill="#454464"/>
+    <path d="M168 236 q10 34 -4 52 q-10 12 -24 8" fill="#454464"/>
+    <ellipse cx="120" cy="296" rx="22" ry="15" fill="#FFFFFF"/>
+    <ellipse cx="160" cy="296" rx="22" ry="15" fill="#FFFFFF"/>
+
+    <!-- 재킷 몸통 -->
+    <path d="M78 176 C78 150 100 138 140 138 C180 138 202 150 202 176 L200 232 C200 248 176 256 140 256 C104 256 80 248 80 232 Z" fill="#454464"/>
+    <!-- 재킷 카라 -->
+    <path d="M112 150 L140 178 L168 150" fill="none" stroke-width="5"/>
+    <!-- 단추 라인 -->
+    <path d="M140 178 L140 240" fill="none" stroke="#FFFFFF" stroke-width="4" stroke-dasharray="2 12"/>
+    <!-- $ 엠블럼 -->
+    <circle cx="168" cy="196" r="15" fill="#FFFFFF"/>
+    <text x="168" y="203" font-family="Arial, sans-serif" font-size="18" font-weight="700" fill="#3F3D56" text-anchor="middle" stroke="none">$</text>
+
+    <!-- 팔/손 -->
+    <path d="M84 178 C64 196 62 224 84 236" fill="#454464"/>
+    <path d="M196 178 C216 196 218 224 196 236" fill="#454464"/>
+    <circle cx="92" cy="238" r="16" fill="#FFFFFF"/>
+    <circle cx="188" cy="238" r="16" fill="#FFFFFF"/>
+
+    <!-- 머리 -->
+    <path d="M58 96 C58 52 94 26 140 26 C186 26 222 52 222 96 C222 140 186 166 140 166 C94 166 58 140 58 96 Z" fill="#DCE1E9"/>
+    <!-- 볼 -->
+    <circle cx="90" cy="112" r="18" fill="#F8B9C4" stroke="none"/>
+    <circle cx="190" cy="112" r="18" fill="#F8B9C4" stroke="none"/>
+    <!-- 눈 -->
+    <ellipse cx="116" cy="100" rx="7" ry="11" fill="#3F3D56" stroke="none"/>
+    <ellipse cx="164" cy="100" rx="7" ry="11" fill="#3F3D56" stroke="none"/>
+    <circle cx="118" cy="96" r="2.5" fill="#FFFFFF" stroke="none"/>
+    <circle cx="166" cy="96" r="2.5" fill="#FFFFFF" stroke="none"/>
+    <!-- 코/입 -->
+    <path d="M133 120 q7 -8 14 0 q-7 8 -14 0 Z" fill="#B7455B" stroke="none"/>
+    <path d="M128 132 q12 10 24 0" fill="none" stroke-width="4"/>
+  </g>
+</svg>

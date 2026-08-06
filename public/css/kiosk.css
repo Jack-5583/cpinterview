@@ -117,7 +117,7 @@
 /* 푸터 */
 .k-footer { display: flex; align-items: flex-end; justify-content: space-between; gap: 24px;
   padding: 14px 44px 26px; color: var(--ink-soft); font-size: 17px; line-height: 1.5; max-width: 1500px; margin: 0 auto; }
-.k-footer-text p { margin: 2px 0; }
+.k-footer-text p { margin: 6px 0; font-size: 42px; line-height: 1.4; }
 .k-footer b { color: var(--navy-header); }
 .k-footer-logo { height: 30px; width: auto; opacity: .82; flex-shrink: 0; }
 

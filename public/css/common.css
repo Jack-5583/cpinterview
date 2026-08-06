@@ -30,6 +30,9 @@
 
   --font: "Pretendard", "Pretendard Variable", -apple-system, BlinkMacSystemFont,
           "Apple SD Gothic Neo", "Malgun Gothic", "맑은 고딕", "Noto Sans KR", sans-serif;
+
+  --navy-header: #395062; /* 키오스크 헤더 배경 (Figma 시안) */
+  --seat-btn:    #8fb5e6; /* 착석 완료 버튼 (Figma 시안) */
 }
 
 * { box-sizing: border-box; }

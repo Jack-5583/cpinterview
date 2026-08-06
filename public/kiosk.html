@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>대기석 · 키오스크</title>
   <link rel="icon" href="/assets/favicon.svg" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css" />
   <link rel="stylesheet" href="/css/common.css" />
   <link rel="stylesheet" href="/css/kiosk.css" />
 </head>
@@ -15,10 +16,13 @@
       <span>현재 시각 |</span>
       <strong id="clock">--:--</strong>
     </div>
+
     <div class="k-title">
       <div class="k-sub">상산고등학교 제45대 학생회 문화기획부 신입 부원 모집 전형</div>
       <div class="k-main">1차 면접(구술) 대기석</div>
     </div>
+
+    <div class="k-groupbadge" id="groupBadge">대기 조 없음</div>
     <div class="k-status" id="conn" title="서버 연결 상태">●</div>
   </header>
 
@@ -26,13 +30,16 @@
     <div id="seats" class="k-seats"></div>
     <div id="empty" class="k-empty">
       <div class="k-empty-emoji">🪑</div>
-      <p>아직 등록된 대기자가 없습니다.<br />관리자 페이지에서 대기자를 등록하면 이곳에 표시됩니다.</p>
+      <p id="empty-msg">현재 대기 중인 조가 없습니다.<br />관리자 화면에서 대기 조를 지정해 주세요.</p>
     </div>
   </main>
 
   <footer class="k-footer">
-    <p>대기석에 착석하셨다면 <b>‘착석완료’</b> 버튼을 꼭 눌러주세요! 화면에 입실 안내가 나오면 면접장으로 입실해주세요.</p>
-    <p>10~15분 이상 일찍 오신 경우 화면에 이름이 없을 수 있습니다. 이 경우 조금만 기다려주세요!</p>
+    <div class="k-footer-text">
+      <p>대기석에 착석하셨다면 <b>‘착석완료’</b> 버튼을 꼭 눌러주세요! 화면에 입실 안내가 나오면 면접장으로 입실해주세요.</p>
+      <p>10~15분 이상 일찍 오신 경우 화면에 이름이 없을 수 있습니다. 이 경우 조금만 기다려주세요!</p>
+    </div>
+    <img class="k-footer-logo" src="/assets/logo.svg" alt="상산고등학교 학생회 문화기획부" />
   </footer>
 
   <!-- 착석 확인 모달 -->
@@ -61,8 +68,10 @@
   <div id="call-popup" class="call-overlay hidden" aria-hidden="true">
     <div class="call-card">
       <div class="call-emoji">🔔</div>
+      <div class="call-group" id="call-group"></div>
       <div class="call-names" id="call-names"></div>
       <div class="call-msg">면접실로 들어오세요</div>
+      <img class="call-logo" src="/assets/logo.svg" alt="상산고등학교 학생회 문화기획부" />
     </div>
   </div>
 

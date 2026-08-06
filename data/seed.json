@@ -1,0 +1,223 @@
+{
+  "applicants": [
+    {
+      "studentId": "10208",
+      "name": "김태호",
+      "gender": "male",
+      "seated": false,
+      "seatedAt": null
+    },
+    {
+      "studentId": "10529",
+      "name": "황재이",
+      "gender": "female",
+      "seated": false,
+      "seatedAt": null
+    },
+    {
+      "studentId": "10619",
+      "name": "오주은",
+      "gender": "female",
+      "seated": false,
+      "seatedAt": null
+    },
+    {
+      "studentId": "10719",
+      "name": "이재아",
+      "gender": "female",
+      "seated": false,
+      "seatedAt": null
+    },
+    {
+      "studentId": "10727",
+      "name": "최지우",
+      "gender": "female",
+      "seated": false,
+      "seatedAt": null
+    },
+    {
+      "studentId": "10817",
+      "name": "윤채원",
+      "gender": "female",
+      "seated": false,
+      "seatedAt": null
+    },
+    {
+      "studentId": "11115",
+      "name": "이건희",
+      "gender": "male",
+      "seated": false,
+      "seatedAt": null
+    },
+    {
+      "studentId": "11028",
+      "name": "홍승찬",
+      "gender": "male",
+      "seated": false,
+      "seatedAt": null
+    },
+    {
+      "studentId": "10308",
+      "name": "김우찬",
+      "gender": "male",
+      "seated": false,
+      "seatedAt": null
+    },
+    {
+      "studentId": "10325",
+      "name": "장준영",
+      "gender": "male",
+      "seated": false,
+      "seatedAt": null
+    },
+    {
+      "studentId": "10329",
+      "name": "한도훈",
+      "gender": "male",
+      "seated": false,
+      "seatedAt": null
+    },
+    {
+      "studentId": "10517",
+      "name": "양지윤",
+      "gender": "female",
+      "seated": false,
+      "seatedAt": null
+    },
+    {
+      "studentId": "10805",
+      "name": "김지민",
+      "gender": "female",
+      "seated": false,
+      "seatedAt": null
+    },
+    {
+      "studentId": "11113",
+      "name": "용준우",
+      "gender": "male",
+      "seated": false,
+      "seatedAt": null
+    },
+    {
+      "studentId": "10214",
+      "name": "신정훈",
+      "gender": "male",
+      "seated": false,
+      "seatedAt": null
+    },
+    {
+      "studentId": "10226",
+      "name": "정진호",
+      "gender": "male",
+      "seated": false,
+      "seatedAt": null
+    },
+    {
+      "studentId": "10804",
+      "name": "김민주",
+      "gender": "female",
+      "seated": false,
+      "seatedAt": null
+    },
+    {
+      "studentId": "10401",
+      "name": "강예준",
+      "gender": "male",
+      "seated": false,
+      "seatedAt": null
+    },
+    {
+      "studentId": "20404",
+      "name": "김무건",
+      "gender": "male",
+      "seated": false,
+      "seatedAt": null
+    },
+    {
+      "studentId": "21216",
+      "name": "양나로",
+      "gender": "male",
+      "seated": false,
+      "seatedAt": null
+    },
+    {
+      "studentId": "21208",
+      "name": "김태윤",
+      "gender": "male",
+      "seated": false,
+      "seatedAt": null
+    }
+  ],
+  "groups": [
+    {
+      "id": "g1",
+      "memberIds": [
+        "10208",
+        "10529",
+        "10619"
+      ],
+      "calledAt": null
+    },
+    {
+      "id": "g2",
+      "memberIds": [
+        "10719",
+        "10727",
+        "10817"
+      ],
+      "calledAt": null
+    },
+    {
+      "id": "g3",
+      "memberIds": [
+        "11115",
+        "11028"
+      ],
+      "calledAt": null
+    },
+    {
+      "id": "g4",
+      "memberIds": [
+        "10308",
+        "10325",
+        "10329"
+      ],
+      "calledAt": null
+    },
+    {
+      "id": "g5",
+      "memberIds": [
+        "10517",
+        "10805",
+        "11113"
+      ],
+      "calledAt": null
+    },
+    {
+      "id": "g6",
+      "memberIds": [
+        "10214",
+        "10226"
+      ],
+      "calledAt": null
+    },
+    {
+      "id": "g7",
+      "memberIds": [
+        "10804",
+        "10401"
+      ],
+      "calledAt": null
+    },
+    {
+      "id": "g8",
+      "memberIds": [
+        "20404",
+        "21216",
+        "21208"
+      ],
+      "calledAt": null
+    }
+  ],
+  "currentGroupId": "g1"
+}

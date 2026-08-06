@@ -25,6 +25,8 @@ const io = new Server(server);
 const PORT = process.env.PORT || 3000;
 const DATA_DIR = process.env.DATA_DIR || path.join(__dirname, 'data');
 const DATA_FILE = path.join(DATA_DIR, 'state.json');
+// 최초 실행(또는 무료 호스팅에서 재시작) 시 명단을 자동 복구하기 위한 기본 데이터
+const SEED_FILE = path.join(__dirname, 'data', 'seed.json');
 
 // ---------------------------------------------------------------------------
 // 상태
@@ -51,14 +53,17 @@ function deriveGender(studentId) {
 // ---------------------------------------------------------------------------
 function loadState() {
   try {
-    if (fs.existsSync(DATA_FILE)) {
-      const raw = JSON.parse(fs.readFileSync(DATA_FILE, 'utf8'));
+    // 저장된 진행 상태가 있으면 그것을, 없으면 기본 명단(seed)을 불러온다
+    const file = fs.existsSync(DATA_FILE) ? DATA_FILE : (fs.existsSync(SEED_FILE) ? SEED_FILE : null);
+    if (file) {
+      const raw = JSON.parse(fs.readFileSync(file, 'utf8'));
       state.applicants = Array.isArray(raw.applicants) ? raw.applicants : [];
       state.groups = Array.isArray(raw.groups) ? raw.groups : [];
       state.currentGroupId = raw.currentGroupId || null;
       state.applicants.forEach((a) => { a.gender = deriveGender(a.studentId); });
       normalizeCurrent();
-      console.log(`[data] 복구: 대기자 ${state.applicants.length}명, 조 ${state.groups.length}개`);
+      const src = file === SEED_FILE ? '기본 명단' : '저장 상태';
+      console.log(`[data] ${src} 로드: 대기자 ${state.applicants.length}명, 조 ${state.groups.length}개`);
     }
   } catch (err) {
     console.error('[data] 상태 파일 읽기 실패, 빈 상태로 시작:', err.message);

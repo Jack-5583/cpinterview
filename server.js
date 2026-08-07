@@ -15,6 +15,7 @@
 const path = require('path');
 const fs = require('fs');
 const http = require('http');
+const crypto = require('crypto');
 const express = require('express');
 const { Server } = require('socket.io');
 
@@ -23,6 +24,11 @@ const server = http.createServer(app);
 const io = new Server(server);
 
 const PORT = process.env.PORT || 3000;
+// 접속 비밀번호 (환경변수 APP_PASSWORD 로 덮어쓸 수 있음)
+const PASSWORD = process.env.APP_PASSWORD || 'saegyeolcpcpcp';
+// 쿠키에 저장할 인증 토큰 (원문 비밀번호는 저장/노출하지 않음)
+const AUTH_TOKEN = crypto.createHash('sha256').update('interview-auth::' + PASSWORD).digest('hex');
+const VIEWS = path.join(__dirname, 'views');
 const DATA_DIR = process.env.DATA_DIR || path.join(__dirname, 'data');
 const DATA_FILE = path.join(DATA_DIR, 'state.json');
 // 최초 실행(또는 무료 호스팅에서 재시작) 시 명단을 자동 복구하기 위한 기본 데이터
@@ -140,17 +146,96 @@ function membersOf(group) {
 }
 
 // ---------------------------------------------------------------------------
-// 정적 라우트
+// 인증 (비밀번호 게이트)
 // ---------------------------------------------------------------------------
+function getCookie(req, name) {
+  const raw = req.headers.cookie || '';
+  const hit = raw.split(';').map((s) => s.trim()).find((s) => s.startsWith(name + '='));
+  return hit ? decodeURIComponent(hit.slice(name.length + 1)) : null;
+}
+function isAuthed(req) { return getCookie(req, 'auth') === AUTH_TOKEN; }
+// 열린 리다이렉트 방지를 위해 허용된 경로만 반환
+function safeDest(d) { return ['/', '/kiosk', '/admin'].includes(d) ? d : '/'; }
+function requireAuth(req, res, next) {
+  if (isAuthed(req)) return next();
+  res.redirect('/login?next=' + encodeURIComponent(req.path));
+}
+function loginPage(nextPath, error) {
+  const nx = safeDest(nextPath);
+  return `<!doctype html><html lang="ko"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>로그인 · 면접 대기 관리</title>
+<link rel="icon" href="/assets/favicon.svg">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css">
+<style>
+*{box-sizing:border-box} html,body{height:100%}
+body{margin:0;font-family:"Pretendard","Pretendard Variable",-apple-system,"Malgun Gothic",sans-serif;
+ background:radial-gradient(1000px 500px at 80% -10%,#e3edff,transparent 60%),#eef4ff;
+ display:grid;place-items:center;color:#1e293b}
+.card{background:#fff;border-radius:24px;box-shadow:0 24px 60px rgba(30,58,138,.18);
+ padding:44px 40px;width:min(400px,92vw);text-align:center}
+.logo{font-size:46px}
+h1{font-size:24px;margin:8px 0 4px;color:#1e40af}
+p{margin:0 0 22px;color:#64748b;font-size:15px}
+input[type=password]{width:100%;font-size:17px;padding:14px 16px;border:1.5px solid #dbeafe;
+ border-radius:12px;outline:none;text-align:center;letter-spacing:2px}
+input[type=password]:focus{border-color:#3b82f6;box-shadow:0 0 0 3px rgba(96,165,250,.25)}
+.err{color:#e11d48;font-weight:700;font-size:14px;margin-top:12px}
+button{margin-top:16px;width:100%;font-size:18px;font-weight:800;color:#fff;border:none;cursor:pointer;
+ padding:14px;border-radius:999px;background:linear-gradient(180deg,#3b82f6,#1d4ed8);
+ box-shadow:0 8px 18px rgba(37,99,235,.35)}
+button:active{transform:translateY(1px)}
+</style></head><body>
+<form class="card" method="post" action="/login" autocomplete="off">
+ <div class="logo">🔒</div>
+ <h1>면접 대기 관리 시스템</h1>
+ <p>접속하려면 비밀번호를 입력하세요.</p>
+ <input type="password" name="password" placeholder="비밀번호" autofocus required>
+ <input type="hidden" name="next" value="${nx}">
+ ${error ? '<div class="err">비밀번호가 올바르지 않습니다.</div>' : ''}
+ <button type="submit">입장</button>
+</form></body></html>`;
+}
+
+app.use(express.urlencoded({ extended: false }));
+// 정적 자원(css/js/assets)은 인증 없이 제공 (민감 정보 없음)
 app.use(express.static(path.join(__dirname, 'public')));
-app.get('/', (_req, res) => res.sendFile(path.join(__dirname, 'public', 'index.html')));
-app.get('/kiosk', (_req, res) => res.sendFile(path.join(__dirname, 'public', 'kiosk.html')));
-app.get('/admin', (_req, res) => res.sendFile(path.join(__dirname, 'public', 'admin.html')));
 app.get('/healthz', (_req, res) => res.json({ ok: true }));
+
+app.get('/login', (req, res) => {
+  if (isAuthed(req)) return res.redirect(safeDest(req.query.next));
+  res.type('html').send(loginPage(req.query.next, req.query.e === '1'));
+});
+app.post('/login', (req, res) => {
+  const pw = (req.body.password || '').toString();
+  const dest = safeDest(req.body.next);
+  if (pw === PASSWORD) {
+    res.setHeader('Set-Cookie', `auth=${AUTH_TOKEN}; HttpOnly; Path=/; Max-Age=86400; SameSite=Lax`);
+    return res.redirect(dest);
+  }
+  res.redirect('/login?e=1&next=' + encodeURIComponent(dest));
+});
+app.get('/logout', (_req, res) => {
+  res.setHeader('Set-Cookie', 'auth=; HttpOnly; Path=/; Max-Age=0; SameSite=Lax');
+  res.redirect('/login');
+});
+
+// 페이지는 인증 필요
+app.get('/', requireAuth, (_req, res) => res.sendFile(path.join(VIEWS, 'index.html')));
+app.get('/kiosk', requireAuth, (_req, res) => res.sendFile(path.join(VIEWS, 'kiosk.html')));
+app.get('/admin', requireAuth, (_req, res) => res.sendFile(path.join(VIEWS, 'admin.html')));
 
 // ---------------------------------------------------------------------------
 // Socket.IO
 // ---------------------------------------------------------------------------
+// 소켓도 동일 쿠키로 인증 (비로그인 직접 연결 차단)
+io.use((socket, next) => {
+  const raw = socket.handshake.headers.cookie || '';
+  const ok = raw.split(';').map((s) => s.trim()).some((s) => s === 'auth=' + AUTH_TOKEN);
+  if (ok) return next();
+  next(new Error('unauthorized'));
+});
+
 io.on('connection', (socket) => {
   socket.emit('state', state);
 

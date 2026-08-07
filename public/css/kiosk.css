@@ -115,8 +115,8 @@
 .k-empty p { font-size: 22px; line-height: 1.6; }
 
 /* 푸터 */
-.k-footer { display: flex; align-items: flex-end; justify-content: space-between; gap: 24px;
-  padding: 14px 44px 26px; color: var(--ink-soft); font-size: 17px; line-height: 1.5; max-width: 1500px; margin: 0 auto; }
+.k-footer { display: flex; align-items: flex-end; justify-content: space-between; gap: 40px;
+  padding: 14px 52px 30px; color: var(--ink-soft); font-size: 17px; line-height: 1.5; }
 .k-footer-text { flex: 1; }
 .k-footer-text p { margin: 6px 0; font-size: 22px; line-height: 1.45; }
 .k-footer-text p.k-footer-lead { font-size: 40px; font-weight: 800; line-height: 1.25; color: var(--navy-header); margin: 0 0 16px; }
